@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>Lista folderów</title>
+  <style>
+    body { font-family: sans-serif; display: flex; gap: 20px; }
+    ul { min-width: 260px; }
+    li { cursor: pointer; margin: 4px 0; }
+    iframe { flex: 1; height: 90vh; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <ul id="lista">Ładowanie...</ul>
+  <iframe id="podglad"></iframe>
+
+  <script>
+    async function wczytaj() {
+      const lista = document.getElementById('lista');
+      try {
+        const res = await fetch('api.php');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const dane = await res.json();
+
+        lista.innerHTML = '';
+        dane.forEach(d => {
+          const li = document.createElement('li');
+          li.textContent = d.folder + (d.file ? ' → ' + d.file : ' [pusty]');
+          if (d.url) {
+            li.onclick = () => {
+              document.getElementById('podglad').src = d.url;
+            };
+          }
+          lista.appendChild(li);
+        });
+      } catch (e) {
+        lista.textContent = 'Błąd: ' + e.message;
+      }
+    }
+    wczytaj();
+  </script>
+</body>
+</html>
