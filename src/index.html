@@ -1,43 +1,26 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <title>Lista folderów</title>
-  <style>
-    body { font-family: sans-serif; display: flex; gap: 20px; }
-    ul { min-width: 260px; }
-    li { cursor: pointer; margin: 4px 0; }
-    iframe { flex: 1; height: 90vh; border: 1px solid #ccc; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <title>Spis zadań | Gallenik Zloty</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <script src="globals.js" type="module"></script>
+  <script src="assets/script.js" type="module" defer></script>
+  <link rel="icon" type="image/x-icon" href="assets/img/directory-light.png" media="(prefers-color-scheme: light)" />
+  <link rel="icon" type="image/x-icon" href="assets/img/directory-dark.png" media="(prefers-color-scheme: dark)" />
 </head>
 <body>
-  <ul id="lista">Ładowanie...</ul>
-  <iframe id="podglad"></iframe>
-
-  <script>
-    async function wczytaj() {
-      const lista = document.getElementById('lista');
-      try {
-        const res = await fetch('api.php');
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const dane = await res.json();
-
-        lista.innerHTML = '';
-        dane.forEach(d => {
-          const li = document.createElement('li');
-          li.textContent = d.folder + (d.file ? ' → ' + d.file : ' [pusty]');
-          if (d.url) {
-            li.onclick = () => {
-              document.getElementById('podglad').src = d.url;
-            };
-          }
-          lista.appendChild(li);
-        });
-      } catch (e) {
-        lista.textContent = 'Błąd: ' + e.message;
-      }
-    }
-    wczytaj();
-  </script>
+  <div class="container">
+    <ul id="list">Ładowanie...</ul>
+    <div id="preview-container">
+    <iframe id="preview"></iframe>
+    <a href="#" id="go">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+      </svg>
+    </a>
+    </div>
+  </div>
 </body>
 </html>
