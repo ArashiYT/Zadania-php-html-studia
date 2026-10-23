@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jak zmienić wygląd div za pomocą CSS</title>
+    <style type="text/css">
+        body {
+            background: white;
+        }
+
+        div { 
+            text-align: center; 
+        }
+
+        .wazne { 
+            font-size: 150%; 
+        }
+
+        #pierwszy {
+            background-color: Black;
+            color: White;
+            border-style: solid;
+            border-bottom-color: Red;
+            margin:20px;
+        }
+        
+        #drugi {
+            display: block;
+            background-color: Blue;
+            color: White;
+            font-weight: bold;
+            border-style: dashed; 
+        }
+        
+        #trzeci {
+            margin-top: 50px;
+            background-color: Silver;
+            font-style: italic;}
+    </style>
+</head>
+<body>
+    <div id="pierwszy" class="wazne">
+        <p>Pierwszy DIV</p>
+    </div>
+    <div id="drugi">
+        <p>Drugi DIV</p>
+    </div>
+    <div id="trzeci" class="wazne">
+        <p>Trzeci DIV</p>
+    </div>
+</body>
+</html>

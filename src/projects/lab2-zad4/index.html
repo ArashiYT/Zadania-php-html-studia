@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino od podstaw – pierwsze kroki z mikrokontrolerami</title>
+    
+    <!-- Theme -->
+    <style>
+        :root {
+            --background: oklch(0.15 0.026 276.9);
+            --foreground: oklch(0.98 0 0);
+            --card: oklch(23.302% 0.05032 275.206);
+            --card-foreground: oklch(0.98 0 0);
+            --popover: oklch(0.18 0.026 276.9);
+            --popover-foreground: oklch(0.98 0 0);
+            --primary: oklch(0.51 0.262 276.9);
+            --primary-foreground: oklch(1 0 0);
+            --secondary: oklch(0.59 0.262 276.9 / 0.25);
+            --secondary-foreground: oklch(0.9 0.25 276.9);
+            --muted: oklch(0.25 0.018 276.9);
+            --muted-foreground: oklch(0.75 0.039 276.9);
+            --accent: oklch(0.38 0.026 276.9);
+            --accent-foreground: oklch(0.98 0 0);
+            --destructive: oklch(0.69 0.2 23.9);
+            --destructive-foreground: oklch(0 0 0);
+            --border: oklch(0.29 0.018 276.9);
+            --input: oklch(0.29 0.018 276.9);
+            --ring: oklch(0.59 0.262 276.9);
+            --chart-1: oklch(0.35 0.25 276.9);
+            --chart-2: oklch(0.55 0.22 276.9);
+            --chart-3: oklch(0.75 0.18 276.9);
+            --chart-4: oklch(0.9 0.15 276.9);
+            --chart-5: oklch(0.99 0.11 276.9);
+            --sidebar: oklch(0.11 0.018 276.9);
+            --sidebar-foreground: oklch(0.98 0 0);
+            --sidebar-primary: oklch(1 0 0);
+            --sidebar-primary-foreground: oklch(0.2 0.018 276.9);
+            --sidebar-accent: oklch(0.24 0.018 276.9);
+            --sidebar-accent-foreground: oklch(0.98 0 0);
+            --sidebar-border: oklch(0.28 0.018 276.9);
+            --sidebar-ring: oklch(0.59 0.262 276.9);
+            --shadow-2xs: 0 1px 3px 0 hsl(0 0% 0% / 0.05);
+            --shadow-xs: 0 1px 3px 0 hsl(0 0% 0% / 0.05);
+            --shadow-sm: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+            --shadow-md: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+            --shadow-lg: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+            --shadow-xl: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+            --shadow-2xl: 0 1px 3px 0 hsl(0 0% 0% / 0.25);
+            --radius: 0.5rem;
+        }
+    </style>
+
+    <!-- Main style -->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Inter, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--background);  
+        }
+
+        /* Navigation */
+        .nav {
+            height: 70px;
+            background-color: var(--card);
+            display: flex;
+            padding-inline: 1.2rem;
+            align-items: center;
+            gap: 14px;
+            width: 85%;
+            margin-inline: auto;
+            box-shadow: 0 0 0 100vmax var(--card);
+            clip-path: inset(0 -100vmax);
+        }
+        
+       .nav img {
+            width: 40px !important;
+        }
+    
+        .nav .desktop {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+        }
+                
+        .nav .desktop li {
+            list-style-type: none;
+            
+        }        
+                   
+        
+        .nav .desktop li a {  
+            display: block;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            transition: 0.2s;
+            color: var(--primary-foreground);
+            padding-inline: 0.5rem;
+            text-decoration: none;
+            border-radius: var(--radius);
+        }
+        
+        .nav .desktop li a:hover {
+            background-color: var(--primary);
+        }
+
+        .nav .desktop li:last-child {
+            margin-left: auto;
+        }
+
+        .nav .desktop li:last-child a {
+            background: var(--primary);
+            border-radius: 0.5rem;
+            border: 1px solid var(--primary);
+            transition: 0.2s;
+        }
+
+        .nav .desktop li:last-child a:hover {
+            border-color: var(--primary-foreground); 
+            background-color: var(--background);
+        }
+
+        .nav .mobile {
+            display: none;
+            margin-left: auto;
+        }
+
+        .nav .mobile button svg {
+            width: 20px;
+            height: 20px;
+            color: var(--card-foreground)
+        }
+
+        .nav .mobile button {
+            outline: none;
+            background: transparent;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--card-foreground);
+            border-radius: 0.25rem;
+        }
+
+        .nav .mobile button:hover {
+            background-color: var(--card-foreground);
+            cursor: pointer;
+        }
+
+        .nav .mobile button:hover svg {
+            color: var(--card)
+        }
+
+        /* Hero section */
+        header .content {
+            display: flex;
+            width: 100%;
+            justify-content:space-evenly;
+            align-items: center;
+            height: 100vh;
+            min-height: 100vh;
+        }
+
+        header .content .text {
+            background: var(--card);
+            color: var(--card-foreground);
+            border-radius: var(--radius);
+            box-shadow: 0px 0px 10px 1px var(--muted-foreground);
+            width: min(50%, 55rem);
+            height: 40rem;
+            text-align: justify;
+            display: flex;
+            flex-direction: column;
+            line-height: 4.5rem;
+            justify-content: center;
+            padding-inline: 2.2em;
+            margin-inline: 1.2em;
+            gap: 0.5rem;
+        }       
+
+        header .content .text h1 {
+            font-size: 4.7rem;
+        }
+
+        header .content .text h2 {
+            color: var(--muted-foreground);
+            font-size: 2em;
+        }
+
+        header .content img {
+            width: 40rem;
+        }
+               
+        /* Footer */
+        footer {
+            height: 300px;
+            color: var(--card-foreground);
+            background-color: var(--card);
+        }
+
+        footer .page {
+            display: flex;
+            height: 240px;
+            align-items: center;
+            width: 100%;
+            justify-content: space-around;
+            gap: 1.2em;
+            font-size: 1.5em;
+        }
+
+        footer .page .email {
+            display: flex;
+            align-items: center;
+            gap: 0.2em;
+            
+        }
+
+        footer .page a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer .contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        footer .links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        footer .links a {
+            color: var(--card-foreground);
+            text-decoration: none;
+           
+        }
+
+        footer .links a svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        footer .links a:hover svg {
+            fill: var(--primary)
+        }
+
+         footer .other {
+            border-top: 2px solid var(--muted-foreground);
+            padding-block: 1.2em;
+            display: flex; 
+            justify-content: center;
+            gap: 0.2rem;
+         }
+
+        footer .other div:nth-child(2) {
+            font-weight: 700;
+        }
+            
+        /* Organization */
+        .organization {
+           width: 85%;
+           margin-inline: auto;
+            color: var(--card-foreground);
+            margin-bottom: 5rem;
+        }
+
+         .organization h1 {
+            margin-bottom: 1rem;
+            box-shadow: 0px 0px 10px 1px var(--muted-foreground);
+            border-radius: var(--radius);
+            background-color: var(--card);
+            color: var(--secondary-foreground);
+            padding: 1.5rem 1rem;
+         }
+
+        .organization article {
+            background: var(--card);
+            padding: 1.5rem 2rem;
+            height: 30rem;
+             box-shadow: 0px 0px 5px 1px var(--card);
+             border-radius: 0.3em;
+        }
+        
+        .organization .articles {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(300px, 1fr));
+            gap: 1rem
+        }
+
+        .organization article h2 {
+            color: var(--primary);
+            padding-block: 1rem;
+        }
+
+        .organization article ul {
+            padding: 2rem;
+        }
+
+        .organization article ol {
+            padding: 1rem
+        }
+    </style>
+
+    <!-- Responsive --> 
+     <style>
+         @media (width <= 1600px) {
+             header .content .text  {
+                text-align: left;
+                margin-top: 0;
+                width: 85% !important;
+                margin-inline: auto;
+                box-shadow: 0 0 0 100vmax var(--card);
+                clip-path: inset(0 -100vmax);
+                height: 100% !important;
+                border-radius: 0;
+             }
+
+             .organization {
+                margin-top: 5rem;
+             }
+
+              header .content {
+                margin: 0 !important;
+                display: block;
+            }
+
+              header .content img {
+                display: none;
+             }
+
+        }
+
+        @media (width <= 1350px) {
+             header .content .text {
+                gap: 1.4rem
+             }
+
+             header .content .text h2 {
+                line-height: 2.5rem;
+             }
+        }
+
+          @media (width <= 1250px) {
+            header .content {
+                display: block;
+                margin-top: 2rem;
+                margin-inline: auto;
+            }
+
+           
+
+             header .content .text {
+                width: 95%;
+                height: 85vh;
+                gap:4rem;
+                text-align: center;
+             }
+
+             header .content .text h1  {
+                font-size: 5rem;
+                line-height: 6rem;
+                
+                
+             }
+
+              header .content .text h2 {
+                line-height: 4.5rem;
+                font-size: 3rem;
+             }
+
+             
+
+        }
+
+        @media (width <= 1100px) {
+            .organization .articles {
+                grid-template-columns: repeat(1,1fr);
+            }
+        }
+
+        @media (width <= 768px) {
+             header .content .text  {
+                gap: 2rem
+            
+             }
+
+             header .content .text h1 {
+                font-size: 3.5rem;
+                line-height: 4rem;
+             }
+
+             header .content .text h2 {
+                font-size: 2rem;
+                line-height: 2.5rem;
+             }
+
+             .nav .desktop {
+                display: none;
+             }
+
+             .nav .mobile {
+                display: block;
+             }
+
+             footer .page {
+                flex-direction: column;
+                justify-content: center !important;
+             }
+
+             footer {
+                height: 300px !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+             }
+
+             footer .other {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 80px;
+                gap: 1rem
+             }
+        }
+
+        @media (width <= 520px) {
+           
+            
+            header .content .text {
+                gap: 1rem;
+                padding: 0.5rem;
+                padding-block: 5rem;
+            }
+
+            header .content .text h1 {
+                font-size: 2.5rem;
+                line-height: 2.5rem;
+            }
+
+             header .content .text h2 {
+                font-size: 1.5rem;
+                line-height: 1.5rem;
+             }
+
+             .organization article {
+                min-height: 30rem;
+                height: auto;
+                padding-bottom: 1.5rem;
+             }
+
+             footer .contact {
+                font-size: 1.2rem;
+             }
+
+             footer .other {
+                font-size: 0.8rem;
+                text-align: center;
+                height: 90px;
+             }
+        }
+
+        @media (width <= 400px) {
+            .organization h1 {
+                text-align: center;
+            }
+
+            .organization article {
+                padding: 0.75rem 1.2rem;
+                
+            }
+
+            .organization article h2 {
+                text-align: center 
+            }
+
+            .organization article span {
+                display: block;
+                text-align: justify;
+                margin-block: 0.5rem;
+            }
+        }
+     </style>
+</head>
+<body>
+        <header>
+            <nav class="nav">
+                <img src="logo-teamweb.png" alt="Logo TeamWEB">
+                <ul class="desktop">
+                    <li><a href="#opis-warsztatow" title="Opis warsztatów">Opis warsztatów</a></li>
+                    <li><a href="#plan-zajec" title="Plan zajęć">Plan zajęć</a></li>
+                    <li><a href="#kontakt" title="Kontakt">Kontakt</a></li>
+                    <li><a href="https://TeamWEB.pollub.pl" target="_blank" title="KN Teamweb">KN Teamweb</a></li>
+                </ul>
+                <div class="mobile">
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                    </button>
+                 </div>
+            </nav>
+           
+            <div class="content">
+                <div class="text">
+                    <h1>Arduino od podstaw – warsztaty praktyczne</h1>
+                    <h2>Dla studentów Politechniki Lubelskiej</h2>
+        
+                </div>
+                <img src="logo.png" alt="Logo Politechniki Lubelskiej">
+            </div>
+        </header>
+        <main>
+            <section class="organization", id="opis-warsztatow">
+                <h1>ORGANIZACJA ZAJĘĆ</h1>
+                <div class="articles">
+                    <article>
+                        <h2>Przebieg zajęć</h2>
+                        <ol>
+                            <li>Krótkie wprowadzenie teoretyczne.</li>
+                            <li>Praktyczne zadania na Tinkercad.</li>
+                            <li>Praktyczne zadania z wykorzystaniem zestawów Arduino.</li>
+                            <li>Prezentacja gotowych projektów.</li>
+                            <li>Dyskusja grupowa.</li>
+                            <li>Zakończenie zajęć.</li>
+                        </ol>
+    
+                        <span><strong style="color: var(--destructive)">Uwaga!</strong> Instruktor pomaga na bieżąco, odpowiadając na pytania i wspierając uczestników.</span>
+                    </article>
+                    <article>
+                        <h2>Wyposażenie i wymagania</h2>
+                        <span>Dla każdego uczestnika udostępniamy na czas zajęć zestawy zawierające:</span>
+                        <ul>
+                            <li>Arduino UNO,</li>
+                            <li>płytkę stykową,</li>
+                            <li>diody LED,</li>
+                            <li>czujniki</li>
+                            <li>i inne komponenty</li>
+                            <li>oraz komputer.</li>
+                        </ul>
+                        <span>Jeśli ktoś woli korzystać z własnego laptopa, powinien zainstalować środowisko Arduino IDE – w czym instruktor chętnie pomoże podczas pierwszych zajęć.</span>
+                    </article>
+                </div>
+            </section>
+        </main>
+        <footer id="kontakt">
+            <div class="page">
+                <div class="contact">
+                    <div class="email">
+                        Kontakt: 
+                        <a href="mailto:TeamWEB@pollub.edu.pl" target="_blank" title="Email Teamweb">TeamWEB@pollub.edu.pl</a>
+                    </div>
+                    <div class="web">
+                        <a href=" https://TeamWEB.pollub.pl" target="_blank"  title="KN Teamweb">https://TeamWEB.pollub.pl</a>
+                    </div>
+                </div>
+               <div class="links">
+                <a href="https://www.facebook.com/KNTeamWEB " target="_blank" title="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/knteamweb/ " target="_blank" title="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/company/knteamweb/" target="_blank" title="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
+                         <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
+                    </svg>
+                </a>
+               </div>
+            </div>
+           <div class="other">
+               <div> Koło Naukowe Technologii Informatycznych i Multimedialnych:</div>
+               <div> TeamWEB &copy; 2027</div>       
+           </div>
+        </footer>
+</body>
+</html>
