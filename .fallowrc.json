@@ -9,7 +9,7 @@
    "minOccurrences": 3,
   },
   "ignorePatterns": [
-   "src/assets/*.{css,js}", "src/globals.js"
+   "src/assets/*.{css,js}", "src/globals.js", "src/projects/**/*.css"
   ],
   "rules": {}
 }
