@@ -1,8 +1,29 @@
+<!-- 
+    Dodatkowa uwaga. 
+    Strona została zaprojektowania aby nie było języka js w kodzie. Przez co niektóre validatory wyalają warningi badź błędy, że nie możę być button w odsyłączu.  
+    Zresztą niektóe validatory css nie potrafią obsługiwać najnowszych funkcji css jak i html
+    Kod zawiera zarówno wersje normalną jak i mobilną
+    z czego podzielony jest na kilka części
+
+    - Theme: style kolorów któe były brane z: https://www.shadcndesign.com
+    - Menu, czyli stylizacja popoveru zaimplementowanego za pomocą atrybutu `popover`, `popovertarget` z czego więcej informacji znajduje się tutaj: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover
+    - Z samego głównego stylu
+    - Z responsywności
+    - Z głównej struktury
+    - Korzysta z svg do tworzenia ikon z tej biblioteki: https://icons.getbootstrap.com
+
+    Jeżęli ze stroną pojawiłyby się problemy, proszę o kontakt
+    
+    Z poważaniem
+    Michał Książek 104566
+-->
+
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Wymagane do działania responsywności -->
     <title>Arduino od podstaw – pierwsze kroki z mikrokontrolerami</title>
     
     <!-- Theme -->
@@ -51,6 +72,45 @@
         }
     </style>
 
+    <!-- Popover  -->
+    <style>
+        #menu {
+            margin: 0;
+            margin-top: 0.4rem;
+            inset: auto;
+            position-area: bottom; /* Wymagane jest to aby popover ustawiał się pod przyciskiem. UWAGA! nie każda przegląarka to obsługuje   */
+            background-color: var(--popover);
+        }
+
+        #menu ul {
+            display: grid;
+            grid-template-columns:  1fr;
+            gap: 0.4rem;
+            padding: 0.4rem;
+        }
+
+        #menu li a {
+            display: block;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            color: var(--popover-foreground);
+            padding-inline: 0.5rem;
+            text-decoration: none;
+            border-radius: var(--radius);
+        }
+
+         #menu li a button {
+            color: inherit;
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            font-size: inherit;
+         }
+        
+    </style>
+
     <!-- Main style -->
     <style>
         * {
@@ -61,11 +121,13 @@
         }
 
         html {
-            scroll-behavior: smooth;
+            scroll-behavior: smooth; /* Płynna animacja paska, to głównie po to aby płynnie przechodziło do odpowiedniej sekcji, a nie szarpało */
         }
 
         body {
             background-color: var(--background);  
+            max-width: 85%;
+            margin-inline: auto;
         }
 
         /* Navigation */
@@ -76,7 +138,7 @@
             padding-inline: 1.2rem;
             align-items: center;
             gap: 14px;
-            width: 85%;
+            width: 100%;
             margin-inline: auto;
             box-shadow: 0 0 0 100vmax var(--card);
             clip-path: inset(0 -100vmax);
@@ -138,12 +200,12 @@
         .nav .mobile button svg {
             width: 20px;
             height: 20px;
-            color: var(--card-foreground)
+            color: var(--card)
         }
 
         .nav .mobile button {
             outline: none;
-            background: transparent;
+            background-color: var(--card-foreground);
             width: 30px;
             height: 30px;
             display: flex;
@@ -153,23 +215,24 @@
             border-radius: 0.25rem;
         }
 
-        .nav .mobile button:hover {
-            background-color: var(--card-foreground);
+        .nav .mobile button:is(:hover, :focus) {
+            background-color: var(--popover);
             cursor: pointer;
         }
 
-        .nav .mobile button:hover svg {
-            color: var(--card)
+        .nav .mobile button:is(:hover, :focus) svg {
+            color: var(--popover-foreground)
         }
 
         /* Hero section */
         header .content {
             display: flex;
             width: 100%;
-            justify-content:space-evenly;
+            justify-content:space-between;
             align-items: center;
-            height: 100vh;
-            min-height: 100vh;
+            height: 100%;
+            min-height: calc(100vh - 5rem);
+            padding-block: 2rem;
         }
 
         header .content .text {
@@ -179,23 +242,22 @@
             box-shadow: 0px 0px 10px 1px var(--muted-foreground);
             width: min(50%, 55rem);
             height: 40rem;
-            text-align: justify;
             display: flex;
             flex-direction: column;
-            line-height: 4.5rem;
             justify-content: center;
             padding-inline: 2.2em;
-            margin-inline: 1.2em;
-            gap: 0.5rem;
+            gap: 2rem;
         }       
 
         header .content .text h1 {
-            font-size: 4.7rem;
+            font-size: 5rem;
+            line-height: 5rem;
         }
 
         header .content .text h2 {
             color: var(--muted-foreground);
-            font-size: 2em;
+            font-size: 2rem;
+            line-height: 2rem;
         }
 
         header .content img {
@@ -204,14 +266,23 @@
                
         /* Footer */
         footer {
-            height: 300px;
+            height: 200px;
             color: var(--card-foreground);
             background-color: var(--card);
+
+            /* TO powoduje ze tło dopełnia się do końća strony mimo ze sama szerokość jest sztywno ustawiona */
+            box-shadow: 0 0 0 100vmax var(--card);
+            clip-path: inset(0 -100vmax);
+            /* =============================== */
+
+            display: flex;
+                flex-direction: column;
+                justify-content: space-between;
         }
 
         footer .page {
             display: flex;
-            height: 240px;
+            height: 180px;
             align-items: center;
             width: 100%;
             justify-content: space-around;
@@ -272,14 +343,15 @@
             
         /* Organization */
         .organization {
-           width: 85%;
+           width: 100%;
            margin-inline: auto;
             color: var(--card-foreground);
-            margin-bottom: 5rem;
+            margin-block: 5rem;
+
         }
 
-         .organization h1 {
-            margin-bottom: 1rem;
+        .title {
+            margin-bottom: 1.5rem;
             box-shadow: 0px 0px 10px 1px var(--muted-foreground);
             border-radius: var(--radius);
             background-color: var(--card);
@@ -297,8 +369,8 @@
         
         .organization .articles {
             display: grid;
-            grid-template-columns: repeat(2, minmax(300px, 1fr));
-            gap: 1rem
+            grid-template-columns: repeat(3, minmax(300px, 1fr));
+            gap: 1.5rem
         }
 
         .organization article h2 {
@@ -313,7 +385,70 @@
         .organization article ol {
             padding: 1rem
         }
+
+        /* Plan zajeć */
+        .plan {
+            margin-bottom: 5rem;
+        }
+        
+        .plan table {
+            border-collapse: collapse;
+        }
+
+        .plan table :is(th, td) {
+            border:1px solid var(--foreground);
+            padding: 1rem 2rem;
+            color: var(--foreground);
+            text-align: center;
+        }
+
+        .plan table th {
+            background-color: var(--secondary);
+        }
+
+        .plan table .colspan td {
+            background-color: var(--primary);
+            text-align: left;
+        }
+
+        .plan table tr:not(.colspan) td {
+            background-color: var(--primary-foreground);
+            color: var(--background);
+            border-color: var(--background);
+        }   
+
+        .plan table tr:not(.colspan) td:first-child {
+            border-left-color: var(--foreground);
+        }
+
+        .plan table tr:not(.colspan) td:last-child {
+            border-right-color: var(--foreground    );
+        }
+
+        .plan table caption {
+            text-align: left;
+            color: var(--foreground);
+            background-color: var(--card);
+            padding: 1rem 10px;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            font-weight: 700    ;
+        }
+
+        /* aside */
+        .aside {
+            margin-bottom: 5rem;
+        }
+
+        .aside span {
+            color: var(--card-foreground);
+            display: block;
+            padding-block: 1.5rem 0.5rem;
+            text-align: justify;
+        }
     </style>
+
+    
 
     <!-- Responsive --> 
      <style>
@@ -321,11 +456,11 @@
              header .content .text  {
                 text-align: left;
                 margin-top: 0;
-                width: 85% !important;
+                width: 100% !important;
                 margin-inline: auto;
                 box-shadow: 0 0 0 100vmax var(--card);
                 clip-path: inset(0 -100vmax);
-                height: 100% !important;
+                height: calc(100vh - 5rem) !important;
                 border-radius: 0;
              }
 
@@ -336,6 +471,7 @@
               header .content {
                 margin: 0 !important;
                 display: block;
+                  padding: 0 !important;
             }
 
               header .content img {
@@ -390,6 +526,18 @@
             .organization .articles {
                 grid-template-columns: repeat(1,1fr);
             }
+
+            .plan {
+                overflow-x: scroll;
+            }
+
+            .plan table {
+                width: 100%;
+            }
+
+            .plan :is(td,th) {
+                width: 40rem !important;
+            }
         }
 
         @media (width <= 768px) {
@@ -423,9 +571,7 @@
 
              footer {
                 height: 300px !important;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
+                
              }
 
              footer .other {
@@ -490,7 +636,7 @@
             .organization article span {
                 display: block;
                 text-align: justify;
-                margin-block: 0.5rem;
+                
             }
         }
      </style>
@@ -506,11 +652,19 @@
                     <li><a href="https://TeamWEB.pollub.pl" target="_blank" title="KN Teamweb">KN Teamweb</a></li>
                 </ul>
                 <div class="mobile">
-                    <button>
+                    <button popovertarget="menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
                         </svg>
                     </button>
+                    <div popover="hint" id="menu">
+                        <ul>
+                            <li><a href="#opis-warsztatow" title="Opis warsztatów"><button popovertarget="menu">Opis warsztatów</button></a></li>
+                            <li><a href="#plan-zajec" title="Plan zajęć"><button popovertarget="menu">Plan zajęć</button></a></li>
+                            <li><a href="#kontakt" title="Kontakt"><button popovertarget="menu">Kontakt</button></a></li>
+                            <li><a href="https://TeamWEB.pollub.pl" target="_blank" title="KN Teamweb"><button popovertarget="menu">KN Teamweb</button></a></li>
+                        </ul>
+                    </div>
                  </div>
             </nav>
            
@@ -524,8 +678,8 @@
             </div>
         </header>
         <main>
-            <section class="organization", id="opis-warsztatow">
-                <h1>ORGANIZACJA ZAJĘĆ</h1>
+            <section class="organization" id="opis-warsztatow">
+                <h1 class="title">ORGANIZACJA ZAJĘĆ</h1>
                 <div class="articles">
                     <article>
                         <h2>Przebieg zajęć</h2>
@@ -553,8 +707,81 @@
                         </ul>
                         <span>Jeśli ktoś woli korzystać z własnego laptopa, powinien zainstalować środowisko Arduino IDE – w czym instruktor chętnie pomoże podczas pierwszych zajęć.</span>
                     </article>
+                    <article>
+                        <h2>Plan zajęć</h2>
+                        <span>Warsztaty obejmują <strong>trzy moduły</strong> podzielone na <strong>sześć spotkań</strong> - każde z nich trwa około <strong>2</strong> godzin.</span>
+                    </article>
                 </div>
             </section>
+            <section class="plan" id="plan-zajec">
+                <table>
+                       <caption align="top">
+                        Table 1 - Plan zajęć kursu
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>Dzień</th>
+                            <th>Temat zajęć</th>
+                            <th>Czas trwania</th>
+                            <th>Niezbedne podzespoły</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="colspan">
+                            <td colspan="4">
+                                Moduł I - Podstawy
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Wprowadzenie, dioda LED, Neopixel8</td>
+                            <td>2h</td>
+                            <td>Arduino UNO, LED, Neopixel8, rezystory, przewody połączeniowe</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Przycisk, buzzer, ekran LCD</td>
+                            <td>2h</td>
+                            <td>Arduino UNO, przycisk, buzzer, ekran LCD, przewody połączeniowe</td>
+                        </tr>
+                        <tr class="colspan">
+                            <td colspan="4">Moduł II – Rozwój umiejętności</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Czujniki analogowe (temperatury, wilgotności, światła, odległości)</td>
+                            <td>2h</td>
+                            <td>Arduino UNO, potencjometr, czujnik temperatury, czujnik wilgotności, fotorezystor, ultradźwiękowy czujnik odległości, przewody połączeniowe</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Serwomechanizm, silnik i sterowanie</td>
+                            <td>2h</td>
+                            <td>Arduino UNO, serwomechanizm, silnik DC, mostek H, tranzystor, przewody połączeniowe</td>
+                        </tr>
+                        <tr class="colspan">
+                            <td colspan="4">Moduł II – Zastosowanie praktyczne</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Własny mini projekt</td>
+                            <td>2h</td>
+                            <td>Zestaw elementów dobrany według wymagań projektu</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Prezentacja projektów uczestników</td>
+                            <td>2h</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                 
+                </table>
+            </section>
+            <aside class="title aside">
+                <h1>O instruktorach</h1>
+                <span>Warsztaty prowadzone są przez studentów – członków Koła Naukowego Technologii Informatycznych i Multimedialnych TeamWEB, którzy z pasją dzielą się wiedzą i praktycznymi umiejętnościami w zakresie programowania mikrokontrolerów Arduino. Nasi instruktorzy chętnie pomagają na każdym etapie zajęć, wspierając uczestników w rozwiązywaniu problemów i realizacji własnych projektów. To świetna okazja, by uczyć się od młodych ekspertów, którzy sami niedawno zaczynali swoją przygodę z elektroniką i programowaniem.</span>
+            </aside>
         </main>
         <footer id="kontakt">
             <div class="page">
