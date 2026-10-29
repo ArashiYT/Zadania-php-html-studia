@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ćwiczenie Flexbox</title>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      header,
+      footer {
+        background: #0077b6;
+        color: white;
+        text-align: center;
+        padding: 15px;
+      }
+
+      .main {
+        display: flex;
+        height: 300px;
+      }
+
+      nav {
+        background: #90e0ef;
+        flex: 1;
+        padding: 20px;
+      }
+      
+      section {
+        background: #caf0f8;
+        flex: 3;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>NAGŁÓWEK</header>
+    <div class="main">
+      <nav>MENU</nav>
+      <section>TREŚĆ</section>
+    </div>
+    <footer>STOPKA</footer>
+  </body>
+</html>

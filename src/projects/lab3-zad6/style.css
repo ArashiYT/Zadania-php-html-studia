@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+header,
+nav a {
+  font-family: "Oswald", "Arial Narrow", sans-serif;
+  text-transform: uppercase;
+}
+
+body {
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer, header {
+    background: linear-gradient(to right, #0056b8, #00a8ff);
+}
+
+
+header {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    padding-inline: 2rem;
+    position: relative;
+    
+}
+
+header h1 {
+    flex: 1;
+    color: white
+}
+
+header .desktop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.2rem;
+    list-style-type: none;
+}
+
+header .mobile {
+    display: none;
+}
+
+header .mobile .btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+
+header .mobile .btn #close {
+    display: none;
+}
+
+header .mobile .btn #open {
+    display: block;
+}
+
+header .mobile.open .btn #open {
+    display: none;
+}
+
+header .mobile.open .btn #close {
+    display: block;
+}
+
+header .mobile.open .content {
+    display: block;
+}
+
+header .mobile .btn svg {
+    fill: white
+}
+
+header .mobile .btn:hover {
+    border-color: #fff;
+    cursor: pointer;
+}
+
+header .mobile .content {
+    position: absolute;
+    display: none;
+    bottom: -210px;
+    right: 35px;
+    background-color: #fffffff5;
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.25);
+    
+}
+
+header .mobile .content ul {
+    list-style: none;
+    padding: 1rem 0.5rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    
+}
+
+header .mobile .content li {
+    width: 100%;
+}
+
+header .mobile .content a {
+    color: #000;
+    width: 100%;
+    text-decoration: none;
+    height: 35px;
+    border: 2px solid #0056b8;
+    display: block;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    background:  linear-gradient(to right, #0056b8, #00a8ff);
+    border-radius: 5px;
+    color: white;
+    transition: 0.2s;
+}
+
+header .mobile .content a:hover {
+    background: transparent;
+    color: #0056b8;
+    cursor: pointer;
+}
+
+header .desktop a {
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-right: 2px dotted rgba(95, 87, 87, 0.3);
+    padding-inline: 1.2rem;
+   
+    text-align: center;
+}
+
+header a , .link {
+    color: rgb(226, 226, 226);
+    text-decoration: underline rgba(27, 27, 27, 0.3) 2px ;
+}
+
+:is(header a, .link):hover {
+    text-decoration: none;
+    color: white
+}
+
+header li:last-child a {
+    border-right: none;
+}
+
+footer {
+    text-align: center;
+    margin-top:auto;
+    color: white;
+    min-height: 50px;
+    display: flex;
+    letter-spacing: 1.5px;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    font-size: 0.85rem;
+}
+
+footer div {
+    border-right: 2px solid #fff;
+    padding-right: 1.2rem;
+}
+
+footer div:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+section {
+    margin: 2rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 70vh;
+}
+
+main {
+    flex: 3;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns:repeat(2, 600px);
+    place-items: center;
+    gap: 20px;
+    background-color: #faf8f8;
+}
+
+main div {
+    background-color: #ebebeb;
+    min-height: 250px;
+    height: auto;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,.25);
+    letter-spacing: 0.5px;
+    text-align: justify;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section aside {
+
+    flex: 1;
+    background-color: #f2f2f2;
+    padding: 1rem 2rem;
+    letter-spacing: 0.5px;
+    text-align: justify;
+    font-size: 0.85rem;
+
+}
+
+@media (max-width: 1600px)  {
+    main { grid-template-columns: repeat(2, 400px);  flex: 2;}
+}
+
+@media (max-width: 1250px) {
+  
+  main { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    section { flex-direction: column-reverse; }
+    nav .desktop {
+        display: none;
+    }
+
+    nav .mobile {
+        display: block;
+    }
+}
+
+@media (max-width: 675px) {
+    footer {
+        flex-direction: column;
+        min-height: 120px;
+        gap: 2px;
+    }
+    footer div {
+        border-right: none;
+    }
+}
+
+@media (max-width: 500px) {
+    section {
+        margin: 0;
+    }
+
+    :is(main div, aside) {
+        font-size: 0.7rem;
+        padding: 0.5rem 1rem;
+    }
+
+    aside {
+        margin: 1rem;
+    }
+}

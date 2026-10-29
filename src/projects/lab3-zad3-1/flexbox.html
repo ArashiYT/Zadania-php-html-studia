@@ -1,0 +1,47 @@
+<!-- 
+    Usunąem `flex 1` bo chciałem pokazać jak się przemieszczają bloki 
+    a z racji tego że wypełnia to blok do dostepnego miejsca niektóre zachowania takie jak
+
+    - justify-content: space-beetween, space-around, flex-start, flex-end nie pokazywaly zmiany w pozycji
+-->
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ćwiczenie Flexbox</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: white;
+      }
+      .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center; 
+        align-items: center; 
+        gap: 10px; 
+        border: 2px solid #333;
+        height: 200px;
+      }
+      .box {
+        width: 40px;
+        background-color: lightblue;
+        border: 1px solid #000;
+        padding: 20px;
+        font-weight: bold;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Ćwiczenie z Flexboxa</h1>
+    <div class="container">
+      <div class="box">1</div>
+      <div class="box">2</div>
+      <div class="box">3</div>
+    </div>
+  </body>
+</html>
